@@ -59,7 +59,8 @@ namespace SimulationProject
                 label3.Text = $"{emer} at {address}";
             }
 
-            car.moveCar(0, 0, 'u');
+            car.moveCar(0, 1, 'u');
+            Console.WriteLine("Should be moving");
             panel1.Invalidate();
         }
 

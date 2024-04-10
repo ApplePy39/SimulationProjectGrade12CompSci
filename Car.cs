@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,12 +12,14 @@ namespace SimulationProject
         public char carType;
         public int carD;
         public bool onInter;
+        Random random = new Random();
 
         public void spawnCar(int x, int y, char c)
         {
             carType = c;
             Globals.carX = x;
             Globals.carY = y;
+
             if (Globals.Gameboard[x, y] == Globals.roadPiece)
             {
                 if (c == 'p')
@@ -30,14 +33,46 @@ namespace SimulationProject
             }
         }
 
+        /// <summary>
+        ///  
+        /// Get Cars location at the beginning of every tick
+        /// Check if the car is at an intersection
+        /// If the car is not at an intersection, continue going forwards until an intersection is hit
+        /// if the car is at an intersection, list all possible ways to move, excluding going backwards.
+        /// Have a random number generated with the total number of ways to move, move the car said way.
+        /// Use the parameters, no need to use -1 or +1 to move the vehicle.
+        /// 
+        /// </summary>
+        /// <param name="h"> horizontal </param>
+        /// <param name="v"> vertical </param>
+        /// <param name="d"></param>
         public void moveCar(int h, int v, char d)
         {
-            int ranChoice = 0;
+            // Not working properly currently
+
+            Console.WriteLine(Globals.carX + " " + Globals.carY);
+            if (Globals.Gameboard[Globals.carX - h, Globals.carY - v] != Globals.intersectionPiece)
+            {
+                Globals.Gameboard[Globals.carX - h, Globals.carY - v] = Globals.carUpPiece;
+                Globals.Gameboard[Globals.carX - h, Globals.carY] = Globals.roadPiece;
+                Console.WriteLine("moving car");
+                Globals.carY--;
+            }
+
+            else if (Globals.Gameboard[Globals.carX - h, Globals.carY - v] == Globals.intersectionPiece)
+            {
+                Globals.Gameboard[Globals.carX - h, Globals.carY - v] = Globals.carUpPiece;
+                Globals.Gameboard[Globals.carX, Globals.carY] = Globals.roadPiece;
+                onInter = true;
+                Console.WriteLine("On intersection");
+            }
+
+        /*    int ranChoice = 0;
             if (carType == 'p')
             {
 
-            }
-            else if (carType == 'n')
+            }*/
+        /*   else if (carType == 'n')
             {
                 if (Globals.Gameboard[Globals.carX, Globals.carY] == Globals.carUpPiece)
                 {
@@ -69,7 +104,6 @@ namespace SimulationProject
                             ranChoice++;
                         }
 
-                        Random random = new Random();
                         int turn = random.Next(1, ranChoice);
 
 
@@ -158,7 +192,7 @@ namespace SimulationProject
                 {
 
                 }
-            }
+            } */
         }
     }
 }
