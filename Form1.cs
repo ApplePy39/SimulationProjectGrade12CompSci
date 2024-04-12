@@ -21,7 +21,7 @@ namespace SimulationProject
         Size cellSize = new Size(40, 40); // each cell will be 40px wide/tall
         Point currentPoint;
         List<Emergency> listOfEmergencies = new List<Emergency>();
-        Car car = new Car();
+        List<Car> activeCars = new List<Car>();
 
         public Form1()
         {
@@ -44,10 +44,17 @@ namespace SimulationProject
         {
             timer1.Interval = 1000;
 
+            newEmergency();
+
+            Console.WriteLine("Should be moving");
+        }
+
+        private void newEmergency()
+        {
             Random random = new Random();
 
             // 25% chance of an emergency spawning every second
-            int emergencyChecker = random.Next(1, 5);
+            int emergencyChecker = random.Next(1, 3);
 
             if (emergencyChecker == 1)
             {
@@ -56,19 +63,32 @@ namespace SimulationProject
                 emergency.AssignHouse();
                 string address = emergency.getRandomAddress();
                 listOfEmergencies.Add(new Emergency(false, 1, emer, address));
-                label3.Text = $"{emer} at {address}";
+                label3.Text = $"{emer} at {address} at the coordinates {emergency.getLocationOnMap()}";
+                DisplayEmergencies();
+            }
+        }
+
+        private void refresh_Tick(object sender, EventArgs e)
+        {
+            int elapsedTime = 0;
+            int numberOfCars = 0;
+
+            Console.WriteLine($"Time elapsed: {elapsedTime += 1}");
+
+            for (int i = 0; i < activeCars.Count; i++)
+            {
+                activeCars[i].moveCar(0, 0, 'u');
+                Console.WriteLine($"Cars active on the road: {numberOfCars += 1}");
             }
 
-            car.moveCar(0, 1, 'u');
-            Console.WriteLine("Should be moving");
-            panel1.Invalidate();
+            Invalidate();
         }
 
         private void DisplayEmergencies()
         {
             for (int i = 0; i < listOfEmergencies.Count; i++)
             {
-            //    Console.WriteLine($"{listOfEmergencies[i]} at {listOfEmergencies[i]} at the coordinates {listOfEmergencies[i].}");
+                Console.WriteLine($"{listOfEmergencies[i].getEmergencyText()} at {listOfEmergencies[i].getEmergencyLocation()} at the coordinates {listOfEmergencies[i].getLocationOnMap()}");
             }
         }
 
@@ -82,12 +102,10 @@ namespace SimulationProject
             {
                 lineOfText = mapFile.ReadLine();
                 if (lineOfText[0] == '-') continue;//This will skip this line of text
-              //  if (lineOfText[0] == '#') continue; 
                 lineOfText = mapFile.ReadLine();//This will have our col and rows
                 string[] data = lineOfText.Split(',');
                 gridSize.Width = Convert.ToInt16(data[0]);
                 gridSize.Height = Convert.ToInt16(data[1]);
-              //  board = new string[gridSize.Width * cellSize.Width, gridSize.Height * gridSize.Height];
                 Globals.Gameboard = new Pieces[gridSize.Width * cellSize.Width, gridSize.Height * gridSize.Height];
                 
                 for (int row = 0; row < gridSize.Height; row++)
@@ -99,8 +117,8 @@ namespace SimulationProject
                     }
                 }
             }
+
             mapFile.Close();
-            ///this.ClientSize = new Size(cellSize.Width * gridSize.Width, cellSize.Height * gridSize.Height);
             this.CenterToScreen();
             this.Invalidate();
         }
@@ -142,15 +160,16 @@ namespace SimulationProject
 
             }
 
-            car.spawnCar(1, 7, 'n');
+          //  car.spawnCar(1, 7, 'n');
+           // car2.spawnCar(10, 10, 'n');
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            board = new string[gridSize.Width * cellSize.Width, gridSize.Height * cellSize.Height];
             readMap();
+            board = new string[gridSize.Width * cellSize.Width, gridSize.Height * cellSize.Height];
             timer1.Start();
-            Console.WriteLine(timer1.Tag);
+            refresh.Start();
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -160,14 +179,31 @@ namespace SimulationProject
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
-            Console.WriteLine(trackBar1.Value);
+            activeCars.Add(new Car(1, 7, 'n'));
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
-            DoubleBuffered = true;
+            
+        }
+
+        private void Form1_Paint(object sender, PaintEventArgs e)
+        {
+           // DoubleBuffered = true;
 
             Brush brush;
+
+            e.Graphics.TranslateTransform(40, 40);
+
+            /*for(int i = 0; i <= 12; i++)
+            {
+                e.Graphics.DrawLine(Pens.Black, i * 40, 0, i * 40, 500);
+            }
+
+            for (int i = 0; i <= 12; i++)
+            {
+                e.Graphics.DrawLine(Pens.Black, 500, i * 40, 0, i * 40);
+            }*/
 
             for (int i = 0; i < gridSize.Width; i++)
             {
@@ -215,7 +251,7 @@ namespace SimulationProject
 
                     else if (Globals.Gameboard[i, j].getPieceName() == "policeStation")
                     {
-                        Rectangle destRectP = new Rectangle(i * cellSize.Width, j * cellSize.Height, cellSize.Width*2, cellSize.Height);
+                        Rectangle destRectP = new Rectangle(i * cellSize.Width, j * cellSize.Height, cellSize.Width * 2, cellSize.Height);
                         e.Graphics.DrawImage(Globals.grassPiece.getPieceImage(), destRectP);
                         e.Graphics.DrawImage(Globals.policeStationPiece.getPieceImage(), destRectP);
                     }
@@ -279,6 +315,11 @@ namespace SimulationProject
         }
 
         private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void EmergencyTrackbar_Scroll(object sender, EventArgs e)
         {
 
         }

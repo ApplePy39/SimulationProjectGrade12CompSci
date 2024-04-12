@@ -2,14 +2,14 @@
 @1
 12,12
 hhhhhhhhhhhh
-hirrihirrrih
-hrggrhrgggrh
-hrggrhrgggrh
-rirriirrrrih
-hrhhhrhhhhrr
-hrhghrhggggr
-hrhhhrhgghgr
-hirrrirrrrii
+hirrrihirrih
+hrgggrhrggrh
+hrgggrhrggrh
+rirrririrrih
+hrhhhrhhhhrh
+hrhghrhgggrh
+hrhhhrhgggrh
+hirrrirrrrir
 hrhhhhhhhhrh
 hrhhhp hhhrh
 hirrrrrrrrih

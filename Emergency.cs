@@ -143,7 +143,6 @@ namespace SimulationProject
             Random random = new Random();
             int xCoord = random.Next(1, 12);
             int yCoord = random.Next(1, 12);
-            Console.WriteLine($"x: {xCoord.ToString()}, y: {yCoord.ToString()}");
             
             if (Globals.Gameboard[xCoord, yCoord] == Globals.housePiece)
             {
@@ -153,7 +152,7 @@ namespace SimulationProject
 
             else if (Globals.Gameboard[xCoord, yCoord] != Globals.housePiece)
             {
-             //   getRandomHouse();
+              //  AssignHouse();
             }
         }
 

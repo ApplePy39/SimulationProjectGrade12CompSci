@@ -22,7 +22,6 @@ namespace SimulationProject
         public static Pieces yellowAlertPiece = new Pieces("yellowAlert", new Bitmap("../../Bitmaps/yellowAlert.png"));
         public static Pieces redAlertPiece = new Pieces("redAlert", new Bitmap("../../Bitmaps/redAlert.png"));
         public static Pieces policeStationPiece = new Pieces("policeStation", new Bitmap("../../Bitmaps/policeStation.png"));
-        public static int carX;
-        public static int carY;
+
     }
 }

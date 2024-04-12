@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SimulationProject
 {
-    internal class Police : Car
+  /*  internal class Police : Car
     {
-    }
+    }*/
 }
